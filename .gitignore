@@ -26,6 +26,7 @@ src/Makefile.in
 tests/Makefile.in
 /Makefile
 m4/Makefile
+cipher/*.exe
 cipher/Makefile
 cipher/libcipher.la
 compat/Makefile

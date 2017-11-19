@@ -49,6 +49,7 @@ rndlinux.c \
 rndegd.c \
 rndunix.c \
 rndw32.c  \
+rndos2.c  \
 rndw32ce.c \
 jitterentropy-base.c jitterentropy.h jitterentropy-base-user.h
 

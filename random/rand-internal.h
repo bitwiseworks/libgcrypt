@@ -133,6 +133,12 @@ size_t _gcry_rndjent_poll (void (*add)(const void*,
                            size_t length);
 void _gcry_rndjent_dump_stats (void);
 
+/*-- rndos2.c --*/
+int _gcry_rndos2_gather_random (void (*add) (const void *, size_t,
+                                             enum random_origins),
+                                enum random_origins origin,
+                                size_t length, int level);
+
 /*-- rndhw.c --*/
 int _gcry_rndhw_failed_p (void);
 void _gcry_rndhw_poll_fast (void (*add)(const void*, size_t,

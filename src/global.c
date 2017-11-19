@@ -325,6 +325,9 @@ print_config (const char *what, gpgrt_stream_t fp)
 #if USE_RNDW32
                      "w32:"
 #endif
+#if USE_RNDOS2
+                     "os2:"
+#endif
                      "\n");
     }
 

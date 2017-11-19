@@ -26,9 +26,17 @@
 #include <stdarg.h>
 #include <errno.h>
 #include <ctype.h>
-#ifdef HAVE_W32_SYSTEM
+#if defined(HAVE_W32_SYSTEM)
 # include <fcntl.h> /* We need setmode().  */
+#elif defined(__OS2__)
+# include <fcntl.h> /* We need setmode().  */
+# include <io.h> /* We need setmode().  */
+# include <signal.h>
 #else
+# ifdef HAVE_DOSISH_SYSTEM
+#  include <io.h>       /* We need setmode().   */
+#  include <fcntl.h>    /* We need O_BINARY     */
+# endif
 # include <signal.h>
 #endif
 #include <assert.h>
