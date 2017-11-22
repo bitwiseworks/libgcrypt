@@ -28,7 +28,7 @@ AM_CCASFLAGS = $(NOEXECSTACK_FLAGS)
 
 EXTRA_DIST = gost-s-box.c
 
-CLEANFILES = gost-s-box
+CLEANFILES = gost-s-box$(EXEEXT)
 DISTCLEANFILES = gost-sb.h
 
 noinst_LTLIBRARIES = libcipher.la
@@ -109,10 +109,10 @@ camellia.c camellia.h camellia-glue.c camellia-aesni-avx-amd64.S \
 blake2.c
 
 gost28147.lo: gost-sb.h
-gost-sb.h: gost-s-box
+gost-sb.h: gost-s-box$(EXEEXT)
 	./gost-s-box $@
 
-gost-s-box: gost-s-box.c
+gost-s-box$(EXEEXT): gost-s-box.c
 	$(CC_FOR_BUILD) -o $@ $(srcdir)/gost-s-box.c
 
 
