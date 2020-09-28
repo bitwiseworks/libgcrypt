@@ -29,8 +29,8 @@ min_automake_version="1.14"
 # commit and push so that the git magic is able to work.  See below
 # for the LT versions.
 m4_define(mym4_version_major, [1])
-m4_define(mym4_version_minor, [9])
-m4_define(mym4_version_micro, [0])
+m4_define(mym4_version_minor, [8])
+m4_define(mym4_version_micro, [6])
 
 # Below is m4 magic to extract and compute the revision number, the
 # decimalized short revision number, a beta version string, and a flag
@@ -50,13 +50,13 @@ m4_define([mym4_full_version],[mym4_version[]mym4_betastring])
 
 AC_INIT([libgcrypt],[mym4_full_version],[http://bugs.gnupg.org])
 
-# LT Version numbers, remember to change them just *before* a release.
+# LT Version numbers: In this branch we only change the revision.
 #   (Interfaces removed:    CURRENT++, AGE=0, REVISION=0)
 #   (Interfaces added:      CURRENT++, AGE++, REVISION=0)
 #   (No interfaces changed:                   REVISION++)
-LIBGCRYPT_LT_CURRENT=23
-LIBGCRYPT_LT_AGE=3
-LIBGCRYPT_LT_REVISION=0
+LIBGCRYPT_LT_CURRENT=22
+LIBGCRYPT_LT_AGE=2
+LIBGCRYPT_LT_REVISION=6
 
 
 # If the API is changed in an incompatible way: increment the next counter.
@@ -1411,8 +1411,15 @@ AC_CACHE_CHECK([whether GCC inline assembler supports BMI2 instructions],
         else
           gcry_cv_gcc_inline_asm_bmi2=no
           AC_COMPILE_IFELSE([AC_LANG_SOURCE(
-          [[void a(void) {
-              __asm__("rorxl \$23, %%eax, %%edx\\n\\t":::"memory");
+          [[unsigned int a(unsigned int x, unsigned int y) {
+              unsigned int tmp1, tmp2;
+              asm ("rorxl %2, %1, %0"
+                   : "=r" (tmp1)
+                   : "rm0" (x), "J" (32 - ((23) & 31)));
+              asm ("andnl %2, %1, %0"
+                   : "=r" (tmp2)
+                   : "r0" (x), "rm" (y));
+              return tmp1 + tmp2;
             }]])],
           [gcry_cv_gcc_inline_asm_bmi2=yes])
         fi])
@@ -1858,8 +1865,19 @@ AC_ARG_ENABLE(optimization,
                          CFLAGS=`echo $CFLAGS | sed 's/-O[[0-9]]//'`
                        fi])
 
+AC_MSG_NOTICE([checking for cc features])
 # CFLAGS mangling when using gcc.
 if test "$GCC" = yes; then
+    AC_MSG_CHECKING([if gcc supports -fno-delete-null-pointer-checks])
+    _gcc_cflags_save=$CFLAGS
+    CFLAGS="-fno-delete-null-pointer-checks"
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([],[])],_gcc_wopt=yes,_gcc_wopt=no)
+    AC_MSG_RESULT($_gcc_wopt)
+    CFLAGS=$_gcc_cflags_save;
+    if test x"$_gcc_wopt" = xyes ; then
+       CFLAGS="$CFLAGS -fno-delete-null-pointer-checks"
+    fi
+
     CFLAGS="$CFLAGS -Wall"
     if test "$USE_MAINTAINER_MODE" = "yes"; then
         CFLAGS="$CFLAGS -Wcast-align -Wshadow -Wstrict-prototypes"
@@ -1891,7 +1909,6 @@ if test "$GCC" = yes; then
           CFLAGS="$CFLAGS -Wpointer-arith"
         fi
     fi
-
 fi
 
 # Check whether as(1) supports a noeexecstack feature.  This test
@@ -2623,6 +2640,7 @@ doc/Makefile
 src/Makefile
 src/gcrypt.h
 src/libgcrypt-config
+src/libgcrypt.pc
 src/versioninfo.rc
 tests/Makefile
 ])

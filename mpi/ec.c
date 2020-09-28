@@ -1509,7 +1509,11 @@ _gcry_mpi_ec_mul_point (mpi_point_t result,
       unsigned int nbits;
       int j;
 
-      nbits = mpi_get_nbits (scalar);
+      if (mpi_cmp (scalar, ctx->p) >= 0)
+        nbits = mpi_get_nbits (scalar);
+      else
+        nbits = mpi_get_nbits (ctx->p);
+
       if (ctx->model == MPI_EC_WEIERSTRASS)
         {
           mpi_set_ui (result->x, 1);
@@ -1730,6 +1734,15 @@ _gcry_mpi_ec_curve_point (gcry_mpi_point_t point, mpi_ec_t ctx)
   x = mpi_new (0);
   y = mpi_new (0);
   w = mpi_new (0);
+
+  /* Check that the point is in range.  This needs to be done here and
+   * not after conversion to affine coordinates.  */
+  if (mpi_cmpabs (point->x, ctx->p) >= 0)
+    goto leave;
+  if (mpi_cmpabs (point->y, ctx->p) >= 0)
+    goto leave;
+  if (mpi_cmpabs (point->z, ctx->p) >= 0)
+    goto leave;
 
   switch (ctx->model)
     {
