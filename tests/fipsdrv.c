@@ -26,17 +26,13 @@
 #include <stdarg.h>
 #include <errno.h>
 #include <ctype.h>
-#if defined(HAVE_W32_SYSTEM)
+#ifdef HAVE_W32_SYSTEM
 # include <fcntl.h> /* We need setmode().  */
-#elif defined(__OS2__)
+#else
+#elif defined(HAVE_OS2_SYSTEM)
 # include <fcntl.h> /* We need setmode().  */
 # include <io.h> /* We need setmode().  */
-# include <signal.h>
-#else
-# ifdef HAVE_DOSISH_SYSTEM
-#  include <io.h>       /* We need setmode().   */
-#  include <fcntl.h>    /* We need O_BINARY     */
-# endif
+#endif
 # include <signal.h>
 #endif
 #include <assert.h>
@@ -1843,7 +1839,7 @@ print_dsa_domain_parameters (gcry_sexp_t key)
   /* Extract the parameters from the S-expression and print them to stdout.  */
   for (idx=0; "pqg"[idx]; idx++)
     {
-      l2 = gcry_sexp_find_token (l1, &"pqg"[idx], 1);
+      l2 = gcry_sexp_find_token (l1, "pqg"+idx, 1);
       if (!l2)
         die ("no %c parameter in returned public key\n", "pqg"[idx]);
       mpi = gcry_sexp_nth_mpi (l2, 1, GCRYMPI_FMT_USG);
@@ -1931,7 +1927,7 @@ print_ecdsa_dq (gcry_sexp_t key)
   /* Extract the parameters from the S-expression and print them to stdout.  */
   for (idx=0; "dq"[idx]; idx++)
     {
-      l2 = gcry_sexp_find_token (l1, &"dq"[idx], 1);
+      l2 = gcry_sexp_find_token (l1, "dq"+idx, 1);
       if (!l2)
         die ("no %c parameter in returned public key\n", "dq"[idx]);
       mpi = gcry_sexp_nth_mpi (l2, 1, GCRYMPI_FMT_USG);

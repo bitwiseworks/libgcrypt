@@ -465,7 +465,7 @@ int _gcry_mpi_get_flag (gcry_mpi_t a, enum gcry_mpi_flag flag);
 #define mpi_snatch( w, u)      _gcry_mpi_snatch( (w), (u) )
 #define mpi_set( w, u)         _gcry_mpi_set( (w), (u) )
 #define mpi_set_ui( w, u)      _gcry_mpi_set_ui( (w), (u) )
-#define mpi_get_ui(w,u)        _gcry_mpi_get_ui( (w), (u) )
+#define mpi_get_ui(a,b)        _gcry_mpi_get_ui( (a), (b) )
 #define mpi_swap(a,b)          _gcry_mpi_swap ((a),(b))
 #define mpi_abs( w )           _gcry_mpi_abs( (w) )
 #define mpi_neg( w, u)         _gcry_mpi_neg( (w), (u) )

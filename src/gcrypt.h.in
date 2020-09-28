@@ -587,9 +587,6 @@ gcry_mpi_t gcry_mpi_set (gcry_mpi_t w, const gcry_mpi_t u);
 /* Store the unsigned integer value U in W. */
 gcry_mpi_t gcry_mpi_set_ui (gcry_mpi_t w, unsigned long u);
 
-/* Store U as an unsigned int at W or return GPG_ERR_ERANGE. */
-gpg_error_t gcry_mpi_get_ui (unsigned int *w, gcry_mpi_t u);
-
 /* Swap the values of A and B. */
 void gcry_mpi_swap (gcry_mpi_t a, gcry_mpi_t b);
 
@@ -843,7 +840,6 @@ gcry_mpi_t _gcry_mpi_get_const (int no);
 #define mpi_snatch( w, u)      gcry_mpi_snatch( (w), (u) )
 #define mpi_set( w, u)         gcry_mpi_set( (w), (u) )
 #define mpi_set_ui( w, u)      gcry_mpi_set_ui( (w), (u) )
-#define mpi_get_ui( w, u)      gcry_mpi_get_ui( (w), (u) )
 #define mpi_abs( w )           gcry_mpi_abs( (w) )
 #define mpi_neg( w, u)         gcry_mpi_neg( (w), (u) )
 #define mpi_cmp( u, v )        gcry_mpi_cmp( (u), (v) )
@@ -1244,8 +1240,7 @@ enum gcry_md_algos
     GCRY_MD_BLAKE2S_256   = 322,
     GCRY_MD_BLAKE2S_224   = 323,
     GCRY_MD_BLAKE2S_160   = 324,
-    GCRY_MD_BLAKE2S_128   = 325,
-    GCRY_MD_SM3           = 326,
+    GCRY_MD_BLAKE2S_128   = 325
   };
 
 /* Flags used with the open function.  */
