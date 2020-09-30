@@ -29,7 +29,7 @@
 #ifdef HAVE_W32_SYSTEM
 # include <fcntl.h> /* We need setmode().  */
 #else
-#elif defined(HAVE_OS2_SYSTEM)
+#if defined(HAVE_OS2_SYSTEM)
 # include <fcntl.h> /* We need setmode().  */
 # include <io.h> /* We need setmode().  */
 #endif
