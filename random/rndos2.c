@@ -23,7 +23,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <sys/time.h>
 #include <sys/ioctl.h>
 #include <net/if.h>
 
@@ -34,6 +34,9 @@
 #define ADD( buf, bufsize, origin, remain ) \
     do { \
         int n = ( bufsize ) < ( remain ) ? ( bufsize ) : ( remain ); \
+        int i; \
+        for( i = 0; i < n; i++) \
+            (( unsigned char *)( buf ))[ i ] += gethrtime(); \
         add( buf, n, origin ); \
         ( remain ) -= n; \
     } while( 0 )
@@ -109,6 +112,7 @@ _gcry_rndos2_gather_random( void ( *add )( const void *, size_t,
         else
             hmodTcpIp32 = NULLHANDLE;
 
+#if 0
         if( !DosLoadModule( szFail, sizeof( szFail ), "netapi32",
                             &hmodNetApi32 ))
         {
@@ -121,6 +125,7 @@ _gcry_rndos2_gather_random( void ( *add )( const void *, size_t,
             }
         }
         else
+#endif
             hmodNetApi32 = NULLHANDLE;
 
         pfnDosPerfSysCall   = NULL;
