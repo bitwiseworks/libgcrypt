@@ -79,7 +79,7 @@ AC_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_LIBOBJ_DIR([compat])
 AC_CANONICAL_HOST
-AM_MAINTAINER_MODE
+#AM_MAINTAINER_MODE
 AM_SILENT_RULES
 
 AC_ARG_VAR(SYSROOT,[locate config scripts also below that directory])
@@ -248,7 +248,6 @@ case "${host}" in
         have_os2_system=yes
         AC_DEFINE(HAVE_DRIVE_LETTERS)
         AC_DEFINE(HAVE_DOSISH_SYSTEM)
-        LDFLAGS="$LDFLAGS -Zbin-files"
         ;;
 
     i?86-*-msdosdjgpp*)
