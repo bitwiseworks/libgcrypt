@@ -33,7 +33,11 @@
 #include "hwf-common.h"
 
 /* The name of a file used to globally disable selected features. */
+#ifndef HAVE_OS2_SYSTEM
 #define HWF_DENY_FILE "/etc/gcrypt/hwf.deny"
+#else
+#define HWF_DENY_FILE "/@unixroot/etc/gcrypt/hwf.deny"
+#endif
 
 /* A table to map hardware features to a string.  */
 static struct

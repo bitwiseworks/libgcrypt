@@ -36,8 +36,11 @@
 
 
 /* The name of the file used to force libgcrypt into fips mode. */
+#ifndef HAVE_OS2_SYSTEM
 #define FIPS_FORCE_FILE "/etc/gcrypt/fips_enabled"
-
+#else
+#define FIPS_FORCE_FILE "/@unxiroot/etc/gcrypt/fips_enabled"
+#endif
 
 /* The states of the finite state machine used in fips mode.  */
 enum module_states
