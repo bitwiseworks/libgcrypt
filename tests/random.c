@@ -32,6 +32,10 @@
 
 #include "stopwatch.h"
 
+#if defined(HAVE_OS2_SYSTEM)
+# include <sys/socket.h>
+# define pipe(A) socketpair(AF_UNIX, SOCK_STREAM, 0, A)
+#endif
 
 #define PGM "random"
 #define NEED_EXTRA_TEST_SUPPORT 1
