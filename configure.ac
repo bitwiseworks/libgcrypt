@@ -1733,9 +1733,17 @@ AC_CHECK_FUNCS(stpcpy strcasecmp)
 # We have replacements for these in src/g10lib.h
 AC_CHECK_FUNCS(strtoul memmove stricmp atexit raise)
 # Other checks
-AC_CHECK_FUNCS(strerror rand mmap getpagesize sysconf waitpid wait4)
+AC_CHECK_FUNCS(strerror rand getpagesize sysconf waitpid wait4)
 AC_CHECK_FUNCS(gettimeofday getrusage gethrtime clock_gettime syslog)
 AC_CHECK_FUNCS(syscall fcntl ftruncate flockfile)
+
+AC_ARG_ENABLE([mmap],
+  AS_HELP_STRING([--disable-mmap],
+                 [do not check mmap() and do not use]),
+  [enable_mmap="no"], [enable_mmap="yes"])
+if test "x${enable_mmap}" != "xno"; then
+  AC_CHECK_FUNCS(mmap)
+fi
 
 GNUPG_CHECK_MLOCK
 
